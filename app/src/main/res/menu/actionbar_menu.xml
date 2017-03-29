@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- show as action always 表示一直显示出来 never表示不显示出来放进更多操作里面-->
+    <item
+        android:id="@+id/menu_test"
+        android:icon="@drawable/arrow_down"
+        android:title="GooglePlayDemo"
+        app:showAsAction="never"/>
+
+</menu>
