@@ -1,11 +1,15 @@
 package com.example.administrator.googleplaydemo.utils;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.widget.LinearLayout;
 
 public class AnimationUtil {
 
@@ -126,5 +130,31 @@ public class AnimationUtil {
 		ret.addAnimation(anim);
 
 		return ret;
+	}
+
+	/**
+	 * 动画改变view的高度
+	 */
+	public static void animationViewHeight (final View view, int start, int end) {
+		ValueAnimator valueAnimator = ValueAnimator.ofInt(start, end);
+		//添加监听器，获取动画需要的数据数据
+		valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation) {
+				int value = (int) animation.getAnimatedValue();
+				//拿到变化的数据设置容器的高度
+				// 获取布局参数
+				LinearLayout.LayoutParams layoutparams = (LinearLayout.LayoutParams) view.getLayoutParams();
+				layoutparams.height = value;
+				view.setLayoutParams(layoutparams);
+			}
+		});
+		//启动animator
+		valueAnimator.start();
+	}
+
+	public static void roateView(View view, float startAngle, float endAngle) {
+		ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "rotation", startAngle, endAngle);
+		objectAnimator.start();
 	}
 }

@@ -51,5 +51,11 @@ public class AppDetailFragment extends BaseFragment {
         AppDetailSecurityView appDetailSecurityView = (AppDetailSecurityView) view.findViewById(R.id.app_detail_security);
         appDetailSecurityView.bindView(mAppDetailBean);
         return view;
+
+        //应用截图
+
+        //应用描述
+
+        //底部条
     }
 }

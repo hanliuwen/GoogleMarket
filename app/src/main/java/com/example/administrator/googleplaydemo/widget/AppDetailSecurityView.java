@@ -1,6 +1,5 @@
 package com.example.administrator.googleplaydemo.widget;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -14,6 +13,7 @@ import com.bumptech.glide.request.target.Target;
 import com.example.administrator.googleplaydemo.R;
 import com.example.administrator.googleplaydemo.app.Constant;
 import com.example.administrator.googleplaydemo.bean.AppDetailBean;
+import com.example.administrator.googleplaydemo.utils.AnimationUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,7 +70,8 @@ public class AppDetailSecurityView extends RelativeLayout {
             Glide.with(getContext()).load(checkBoxUrl).override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).into(checBox);
             //将checkbox网络图片加入到一行
             linearLayout.addView(checBox);
-            //添加一个描述
+
+            //添加一行描述
             TextView textView = new TextView(getContext());
             textView.setText(safeBean.getSafeDes());
 
@@ -98,7 +99,10 @@ public class AppDetailSecurityView extends RelativeLayout {
 
         if (isOpen) {
             //关闭
-
+            int measuredHeight = mSecurityInfoContainer.getMeasuredHeight();
+            AnimationUtil.animationViewHeight(mSecurityInfoContainer,measuredHeight,0);
+            //箭头顺时针旋转180
+            AnimationUtil.roateView(mSecurityArrow, -180f, 0);
         } else {
             //展开
             //高度从0到原始高度（展开后的高度）
@@ -108,17 +112,12 @@ public class AppDetailSecurityView extends RelativeLayout {
             mSecurityInfoContainer.measure(0,0);
             //获取展开后的高度
             int measuredHeight = mSecurityInfoContainer.getMeasuredHeight();
-            //产生动画需要数据序列（0， measureHeight）
-            ValueAnimator valueAnimator = ValueAnimator.ofInt(0, measuredHeight);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    int value = (int) animation.getAnimatedValue();
-                }
-            });
-            //启动animator
-            valueAnimator.start();
+            AnimationUtil.animationViewHeight(mSecurityInfoContainer, 0, measuredHeight);
+            //箭头逆时针旋转180
+            AnimationUtil.roateView(mSecurityArrow, 0, -180f);
         }
 
+        //更新标记
+        isOpen = !isOpen;
     }
 }
