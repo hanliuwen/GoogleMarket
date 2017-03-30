@@ -1,9 +1,11 @@
 package com.example.administrator.googleplaydemo.ui.fragment;
 
+import android.content.Intent;
 import android.widget.BaseAdapter;
 
 import com.example.administrator.googleplaydemo.adapter.AppListAdapter;
 import com.example.administrator.googleplaydemo.bean.AppListItemBean;
+import com.example.administrator.googleplaydemo.ui.activity.AppDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,5 +30,14 @@ public abstract class BaseAppListFragment extends BaseLoadMoreListFragment {
     //暴露给子类，让子类能够将获取到数据添加到数据集合
     public List<AppListItemBean> getDataList() {
         return mDataList;
+    }
+
+    @Override
+    protected void onListItemClick(int position) {
+        //跳转到应用详情
+        Intent intent = new Intent(getContext(),AppDetailActivity.class);
+        //传入点击位置item包名,需要包名发网络请求获取详情数据
+        intent.putExtra("package_name",getDataList().get(position).getPackageName());
+        startActivity(intent);
     }
 }

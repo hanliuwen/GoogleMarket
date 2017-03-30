@@ -45,4 +45,7 @@ public interface Api {
 
     @GET("home")
     Call<HomeBean> listHome(@Query("index")int index);
+
+   /* @GET("detail")
+    Call<AppDetailBean> */
 }
