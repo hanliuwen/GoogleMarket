@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--App 信息-->
+            <com.example.administrator.googleplaydemo.widget.AppDetailInfoView
+                android:id="@+id/app_detail_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.example.administrator.googleplaydemo.widget.AppDetailInfoView>
+
+            <!-- App 安全广告-->
+            <com.example.administrator.googleplaydemo.widget.AppDetailSecurityView
+                android:id="@+id/app_detail_security"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+            </com.example.administrator.googleplaydemo.widget.AppDetailSecurityView>
+
+            <!-- App 截图-->
+
+            <!-- App 描述介绍-->
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!--底部条-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="底部条"
+        android:gravity="center"/>
+
+</LinearLayout>

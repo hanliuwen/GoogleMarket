@@ -6,16 +6,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.example.administrator.googleplaydemo.R;
+
+import butterknife.BindView;
 
 /**
  * Created by Administrator on 2017/3/30.
  */
-public class AppDetailActivity extends BaseActivity{
+public class AppDetailActivity extends BaseActivity {
 
-    private Toolbar mToolBar;
+
+    @BindView(R.id.tool_bar)
+    Toolbar mToolBar;
 
     @Override
     public int getlayoutResId() {
@@ -25,8 +28,8 @@ public class AppDetailActivity extends BaseActivity{
     @Override
     protected void init() {
         super.init();
-        String extra = getIntent().getStringExtra("package_name");
-        Toast.makeText(this, extra, Toast.LENGTH_SHORT).show();
+       /* String extra = getIntent().getStringExtra("package_name");
+        Toast.makeText(this, extra, Toast.LENGTH_SHORT).show();*/
         initToolbar();
         setStatusBarColor();
     }
@@ -50,6 +53,9 @@ public class AppDetailActivity extends BaseActivity{
         return true;
     }
 
+    /**
+     * 由于状态栏的颜色在主题中配置成透明了，所以需要写代码将状态栏的颜色动态的改成想要的颜色
+     */
     private void setStatusBarColor() {
         //只要api level >21 才能写代码配置状态栏颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
