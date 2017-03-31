@@ -13,4 +13,23 @@
         android:textColor="@android:color/white"
         android:background="@drawable/detail_btn_selector"/>
 
+    <com.example.administrator.googleplaydemo.widget.DownloadButton
+        android:id="@+id/download_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下载"
+        android:layout_weight="1"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/selector_app_detail_bottom_normal"
+        android:padding="20dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="分享"
+        android:background="@drawable/detail_btn_selector"
+        android:textColor="@android:color/white"/>
+
 </LinearLayout>

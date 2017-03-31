@@ -7,6 +7,8 @@ import android.widget.RelativeLayout;
 
 import com.example.administrator.googleplaydemo.R;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by Administrator on 2017/3/31.
  */
@@ -24,5 +26,6 @@ public class AppDetailBottomBar extends RelativeLayout {
 
     private void init() {
         View.inflate(getContext(), R.layout.view_app_detail_bottom_bar, this);
+        ButterKnife.bind(this, this);
     }
 }

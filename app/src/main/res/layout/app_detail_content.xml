@@ -49,10 +49,10 @@
     </ScrollView>
 
     <!--底部条-->
-    <TextView
+    <com.example.administrator.googleplaydemo.widget.AppDetailBottomBar
+        android:id="@+id/app_detail_bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="底部条"
-        android:gravity="center"/>
+        android:layout_height="wrap_content">
+    </com.example.administrator.googleplaydemo.widget.AppDetailBottomBar>
 
 </LinearLayout>
