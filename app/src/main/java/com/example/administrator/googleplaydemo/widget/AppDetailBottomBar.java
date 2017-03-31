@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.example.administrator.googleplaydemo.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -15,8 +16,11 @@ import butterknife.ButterKnife;
 
 public class AppDetailBottomBar extends RelativeLayout {
 
+    @BindView(R.id.download_button)
+    DownloadButton mDownloadButton;
+
     public AppDetailBottomBar(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public AppDetailBottomBar(Context context, AttributeSet attrs) {

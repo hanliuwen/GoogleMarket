@@ -1,9 +1,12 @@
 package com.example.administrator.googleplaydemo.ui.activity;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.administrator.googleplaydemo.R;
 import com.example.administrator.googleplaydemo.adapter.MainAdapter;
+import com.example.administrator.googleplaydemo.manager.DownloadManager;
 
 import butterknife.BindView;
 
@@ -52,6 +56,13 @@ public class MainActivity extends BaseActivity {
         mTitles = getResources().getStringArray(R.array.main_titles);
         initActionBar();
         initViewPager();
+
+        //自我检查权限
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //如果没有写磁盘的权限,就申请权限  PERMISSION_GRANTED:许可权限
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        }
     }
 
     private void initViewPager() {
@@ -152,4 +163,16 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 0:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    DownloadManager.getInstance().createDownloadDir();
+                }else {
+                    Toast.makeText(this, "很伤心!你拒绝了我!无法下载该应用", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
 }
