@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="简介"
+        android:padding="8dp"/>
+
+    <TextView
+        android:id="@+id/app_detail_des_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="黑马程序员黑马程序员黑马程序员黑马程序员"
+        android:padding="8dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="app name"
+            android:padding="8dp"/>
+
+        <ImageView
+            android:id="@+id/des_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_up"
+            android:layout_alignParentRight="true"
+            android:padding="8dp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

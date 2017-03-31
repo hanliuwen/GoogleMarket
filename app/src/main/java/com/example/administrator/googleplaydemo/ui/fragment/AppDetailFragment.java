@@ -5,6 +5,8 @@ import android.view.View;
 import com.example.administrator.googleplaydemo.R;
 import com.example.administrator.googleplaydemo.bean.AppDetailBean;
 import com.example.administrator.googleplaydemo.network.MyRetrofit;
+import com.example.administrator.googleplaydemo.widget.AppDetailDesView;
+import com.example.administrator.googleplaydemo.widget.AppDetailGalleryView;
 import com.example.administrator.googleplaydemo.widget.AppDetailInfoView;
 import com.example.administrator.googleplaydemo.widget.AppDetailSecurityView;
 
@@ -50,12 +52,15 @@ public class AppDetailFragment extends BaseFragment {
         //应用安全
         AppDetailSecurityView appDetailSecurityView = (AppDetailSecurityView) view.findViewById(R.id.app_detail_security);
         appDetailSecurityView.bindView(mAppDetailBean);
-        return view;
 
         //应用截图
+        AppDetailGalleryView appDetailGalleryView = (AppDetailGalleryView) view.findViewById(R.id.app_detail_gallery);
+        appDetailGalleryView.bindView(mAppDetailBean);
 
         //应用描述
+        AppDetailDesView appDetailDesView = (AppDetailDesView) view.findViewById(R.id.app_detail_des);
+        appDetailDesView.bindView(mAppDetailBean);
 
-        //底部条
+        return view;
     }
 }
