@@ -79,12 +79,14 @@ public class AppDetailDesView extends RelativeLayout {
             if (mAppDetailDesText.getLineCount() > MAX_LINES) {
                 mAppDetailDesText.setLines(7);
                 mAppDetailDesText.measure(0, 0);
+                AnimationUtil.roateView(mDesArrow,-180f, 0);
             }
             int end = mAppDetailDesText.getMeasuredHeight();
             AnimationUtil.animationViewHeight(mAppDetailDesText, start, end);
         }else {
             int measuredHeight = mAppDetailDesText.getMeasuredHeight();
             AnimationUtil.animationViewHeight(mAppDetailDesText, measuredHeight, mOriginalHeight);
+            AnimationUtil.roateView(mDesArrow, 0, -180f);
         }
 
         isOpen = !isOpen;
