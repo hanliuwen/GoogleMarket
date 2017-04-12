@@ -40,4 +40,15 @@ public abstract class BaseAppListFragment extends BaseLoadMoreListFragment {
         intent.putExtra("package_name",getDataList().get(position).getPackageName());
         startActivity(intent);
     }
+
+    /**
+     * 退出详情界面后重新刷新列表,绑定观察者
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getAdapter() != null) {
+            getAdapter().notifyDataSetChanged();
+        }
+    }
 }

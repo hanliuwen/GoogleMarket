@@ -4,6 +4,8 @@ package com.example.administrator.googleplaydemo.bean;
  * Created by Administrator on 2017/4/1.
  */
 
+import com.example.administrator.googleplaydemo.manager.DownloadManager;
+
 /**
  * 保存一个apk下载过程中的所有数据,公共的数据模块
  */
@@ -15,6 +17,15 @@ public class DownloadInfo {
     private int size;//下载apk的大小
     private String filePath;//apk的文件路径
     private String downloadUrl;//apk的下载链接
+    private DownloadManager.DownloadTask mDownloadTask;
+
+    public DownloadManager.DownloadTask getDownloadTask() {
+        return mDownloadTask;
+    }
+
+    public void setDownloadTask(DownloadManager.DownloadTask downloadTask) {
+        mDownloadTask = downloadTask;
+    }
 
     public String getDownloadUrl() {
         return downloadUrl;

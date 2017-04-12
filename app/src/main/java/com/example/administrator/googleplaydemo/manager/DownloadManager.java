@@ -12,6 +12,7 @@ import android.os.Environment;
 
 import com.example.administrator.googleplaydemo.app.Constant;
 import com.example.administrator.googleplaydemo.bean.DownloadInfo;
+import com.example.administrator.googleplaydemo.utils.ThreadPoolProxy;
 
 import java.io.Closeable;
 import java.io.File;
@@ -19,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Observer;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -48,6 +50,29 @@ public class DownloadManager {
     private HashMap<String, DownloadInfo> mStringDownloadInfoHashMap = new HashMap<String, DownloadInfo>();
 
     private OkHttpClient mOkHttpClient;
+
+
+    //维护一个观察者集合 一个app的下载对应一个观察者 key就是包名 value观察者
+    private HashMap<String, Observer> mStringObserverHashMap = new HashMap<String, Observer>();
+
+    //添加观察者
+    public void addObserver(String packageName, Observer observer) {
+        mStringObserverHashMap.put(packageName, observer);
+    }
+
+    //删除观察者
+    public void removeObserver(String packageName) {
+        mStringObserverHashMap.remove(packageName);
+    }
+
+    //通知观察者
+    public void notifyObserver(String packageName, DownloadInfo downloadInfo) {
+        Observer observer = mStringObserverHashMap.get(packageName);
+        if (observer != null) {
+            observer.update(null, downloadInfo);
+        }
+    }
+
 
     private DownloadManager() {
         //实现下载apk的功能
@@ -173,15 +198,55 @@ public class DownloadManager {
             case STATE_UN_DOWNLOAD:
                 downloadApk(downloadInfo);
                 break;
+            case STATE_DOWNLOADING:
+                pauseDownload(downloadInfo);//如果是正在下载,点击暂停
+                break;
+            case STATE_PAUSE:
+                //如果是暂停状态,点击继续下载
+                downloadApk(downloadInfo);
+                break;
+            case STATE_FAILED:
+                downloadApk(downloadInfo);//如果是失败状态,点击继续下载(断电续传)
+                break;
+            case STATE_WAITING:
+                //取消下载
+                cancelDownload(downloadInfo);
+                break;
         }
     }
 
-    private void downloadApk(DownloadInfo downloadInfo) {
-        //创建一个子线程下载
-        new Thread(new DownloadTask(downloadInfo)).start();
+    private void cancelDownload(DownloadInfo downloadInfo) {
+        //将任务从线程池中移除
+        ThreadPoolProxy.getInstance().remove(downloadInfo.getDownloadTask());
+        //移除完更新状态
+        downloadInfo.setStatus(STATE_UN_DOWNLOAD);
+        notifyObserver(downloadInfo.getPackageName(), downloadInfo);
     }
 
-    private class DownloadTask implements Runnable {
+    private void pauseDownload(DownloadInfo downloadInfo) {
+        //状态更新成暂停
+        downloadInfo.setStatus(STATE_PAUSE);
+        //通知ui更新
+        notifyObserver(downloadInfo.getPackageName(), downloadInfo);
+    }
+
+    private void downloadApk(DownloadInfo downloadInfo) {
+
+        //进入等待的状态
+        downloadInfo.setStatus(STATE_WAITING);
+        //通知ui刷新状态 显示"等待"
+        //通知观察者更新
+        notifyObserver(downloadInfo.getPackageName(), downloadInfo);
+
+        //创建一个子线程下载
+//        new Thread(new DownloadTask(downloadInfo)).start();
+        DownloadTask downloadTask = new DownloadTask(downloadInfo);
+        downloadInfo.setDownloadTask(downloadTask);
+        ThreadPoolProxy.getInstance().execute(downloadTask);
+
+    }
+
+    public class DownloadTask implements Runnable {
 
         private  DownloadInfo mDownloadInfo;
 
@@ -215,16 +280,37 @@ public class DownloadManager {
                     byte[] buffer = new byte[1024];
                     int len = -1;
                     while ((len = inputStream.read(buffer)) != -1) {
+
+                        //如果是暂停状态,则跳出循环
+                        if (mDownloadInfo.getStatus() == STATE_PAUSE) {
+                            return;
+                        }
+
                         fileOutputStream.write(buffer, 0, len);
 
                         //更新下载进度
                         long progress = mDownloadInfo.getProgress() + len;
                         mDownloadInfo.setProgress(progress);
 
+                        mDownloadInfo.setStatus(STATE_DOWNLOADING);
+                        //通知观察者更新进度
+                        notifyObserver(mDownloadInfo.getPackageName(), mDownloadInfo);
+
+                        //断点续传会有bug,当apk下载完之后就会跳出循环,否则出现超时
+                        if (progress == mDownloadInfo.getSize()) {
+                            break;
+                        }
                     }
+                    //通知下载完成
+                    mDownloadInfo.setStatus(STATE_DOWNLOADED);
+                    //通知观察者更新状态
+                    notifyObserver(mDownloadInfo.getPackageName(), mDownloadInfo);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                //下载失败,通知观察者更新ui
+                mDownloadInfo.setStatus(STATE_FAILED);
+                notifyObserver(mDownloadInfo.getPackageName(), mDownloadInfo);
             }finally {
                 //关闭流
                 closeStream(inputStream);

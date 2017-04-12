@@ -62,5 +62,7 @@ public class AppListItemView extends RelativeLayout {
         mAppSize.setText(Formatter.formatFileSize(getContext(),appListItemBean.getSize()));
         //刷新描述
         mAppDes.setText(appListItemBean.getDes());
+        //同步圆形下载按钮的状态
+        mDownloadProgress.syncState(appListItemBean);
     }
 }
